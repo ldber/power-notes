@@ -1,0 +1,1268 @@
+\documentclass[14pt,a5paper,twoside]{book}
+%\documentclass[a5paper,pagesize,10pt,bibtotoc,pointlessnumbers,normalheadings,DIV=9,twoside=false]{scrbook}
+
+\usepackage[parfill]{parskip}
+\usepackage[top=1in,bottom=0.5in,left=0.5in,right=0.5in]{geometry}
+\usepackage{titlesec}
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amsfonts}
+\usepackage{mathabx}
+\usepackage{mathtools}
+\usepackage{graphicx}
+\usepackage{cleveref}
+\usepackage[most]{tcolorbox}
+
+\usepackage{circuitikz}
+\usepackage{framed}
+\usepackage{caption}
+
+\renewpagestyle{plain}{%
+\setfoot{}{}{}
+\sethead[\thepage][][]{}{}{\thepage}\headrule
+}%
+
+\titleformat{\chapter}[hang] 
+{\normalfont\Large\bfseries}{\chaptertitlename\ \thechapter:}{1em}{} 
+\titlespacing*{\chapter}{0pt}{-10pt}{20pt}
+
+\titleformat{\section}
+  {\normalfont\fontsize{12}{15}\bfseries}{\thesection}{1em}{}
+
+\titleformat{\subsection}
+  {\normalfont\fontsize{12}{15}\bfseries}{\thesubsection}{1em}{}
+
+        \makeatletter
+        \newcommand{\ovset}[3][0ex]{%
+          \mathrel{\mathop{#3}\limits^{
+            \vbox to#1{\kern0\ex@
+            \hbox{$\scriptstyle#2$}\vss}}}}
+        \makeatother
+
+\newtcbtheorem[number within=chapter]{Theorem}{}{
+        enhanced,
+        sharp corners,
+        attach boxed title to top left={
+            xshift=-1mm,
+            yshift=-5mm,
+            yshifttext=-1mm
+        },
+        top=1.5em,
+        colback=white,
+        colframe=blue!75!black,
+        fonttitle=\bfseries,
+        boxed title style={
+            sharp corners,
+            size=small,
+            colback=blue!75!black,
+            colframe=blue!75!black,
+        } 
+    }{thm}
+
+\newtcbtheorem[number within=chapter]{Definition}{}{
+        enhanced,
+        sharp corners,
+        attach boxed title to top left={
+            xshift=-1mm,
+            yshift=-5mm,
+            yshifttext=-1mm
+        },
+        top=1.5em,
+        colback=white,
+        colframe=blue!75!black,
+        fonttitle=\bfseries,
+        boxed title style={
+            sharp corners,
+            size=small,
+            colback=blue!75!black,
+            colframe=blue!75!black,
+        } 
+    }{def}
+
+\newenvironment{myTheorem}[2]{ \begin{Theorem}[adjusted title=#1]{}{#2} 
+  \textbf{Theorem \thetcbcounter.} \label{#2}}{\end{Theorem}}
+
+  \newenvironment{myDefinition}[2]{ \begin{Definition}[adjusted title=#1]{}{#2} 
+  \textbf{Definition \thetcbcounter.} \label{#2}}{\end{Definition}}
+
+
+
+
+\title{\textsc{\huge Power Systems Notes}}
+\author{}
+\date{}
+
+\begin{document}
+\pagestyle{empty}
+\pagenumbering{gobble}
+\maketitle
+\cleardoublepage
+\pagestyle{plain}
+\pagenumbering{arabic}
+
+\chapter{Introduction}
+
+The aim is to record what I learn in a pedagogical manner so that I can revisit these notes later on. The notes will be standalone. Occasionally, there might be mathematical concepts that are too sophisticated for these notes in which case, a foundational mathematical text should be consulted.
+
+This set of notes will hopefully be useful to people studying power systems.
+
+\chapter{Foundations of Power\\System Analysis}
+
+This chapter will cover how a simple power system can be analysed using only a pencil and paper. The techniques presented are automated using computers and this will be covered in the following chapters.
+
+\section{Electromagnetic Fundamentals}
+\subsection{Current, Voltage and Power}
+
+For clarity and brevity we will begin with a set of definitions:
+
+\begin{myDefinition}{Electric Charge}{def:DefnCharge}
+	An electric charge is a fundamental property of matter. The SI unit of charge is the coulomb (C).
+\end{myDefinition}
+
+For example, electrons are a negatively charged. When charges move, we have an electric current:
+
+\begin{myDefinition}{Electric Current}{def:DefnCurrent}
+	The rate with respect to time that charge flows through a surface. The SI unit is the ampere (A) and is equal to coulomb per second.
+\end{myDefinition}
+
+A material that allows charges to move around is called a conductor. Materials that don't allow charges to flow are called insulators.
+
+One of the physical properties of a charged particle is that will apply a force on another charged particle according to \emph{Coulomb's Law}. This means that whenever we have charged particles, we also have an electric field.
+
+\begin{myDefinition}{Electric Field}{def:DefnField}
+	An electric field is a vector field that describes the force a charged particle will experience at any point in space. The symbol $\mathbf{E}$ is used to represent an electric field and the units are newtons (N).
+\end{myDefinition}
+
+Thus if we want to move a charged particle in an electric field we need to do work. This allows us to define electric potential:
+
+\begin{myDefinition}{Electric Potential}{def:DefnPotetential}
+	The work done against the electric field to move a unit charge to Point $A$ from an arbitrarily distant place (denoted by $\infty$). Written mathematically:	
+	$$V_{A} = - \int_{\infty}^{A} \mathbf{E}\, d\mathbf{r}$$
+\end{myDefinition}
+
+Usually the electric field is conservative, hence the route taken to Point $A$ will not change the value of the integral. Mathematically, this is equivalent to saying that the electric field is the gradient of a scalar field.
+
+We can think of the potential field as assigning each point in space with a scalar number. If the potential at a Point $B$ is higher than the potential at Point $A$, that means we must give energy to a charge to move it from Point $A$ to Point $B$. Conversely, if Point $B$ is at a lower potential than Point $A$, that means we receive energy from a charge that moves from Point $A$ to Point $B$. In this sense, we are often interested in finding the potential difference between two points in a circuit. 
+
+\begin{myDefinition}{Potential Difference}{def:DefnPotetentialDiff}
+	The potential difference from Point $A$ to Point $B$ is defined as:	
+	$$V_{AB} = V_A - V_B$$
+	Potential difference is also referred to as ``voltage'' since the SI unit is the volt (V) equal to joule per coulomb.
+\end{myDefinition}
+
+Note that our definition of potential difference reflects a sign convention commonly used in electrical engineering and which shall be adhered to for these notes.
+
+For maximum clarity, the double subscript notation is used where $V_{AB}$ should be read as ``the voltage from $A$ to $B$''. Typically, voltages are measured with an instrument called a voltmeter which has two leads: one red and the other black. To measure $V_{AB}$ we would place the red probe at $A$ and the black probe at $B$. For this reason, on circuit diagrams, we usually annote voltages with $+$ and $-$ symbols that specify how that voltage is to be measured. In this context, the double subscript notation is not necessary since the voltage is clearly defined. These conventions are made clear in Figure \ref{fig:VoltageConvention}.
+
+
+\begin{figure}
+\begin{center}
+\begin{circuitikz}[american voltages, european resistors, voltage shift=0.5]
+	\draw[opacity=0.7] (0,0) node[label={[font=\footnotesize]below:$B$}] (B) {} to[R, v<=$V$] (0,3) node[label={[font=\footnotesize]above:$A$}] (A) {};
+	%\draw[opacity=0.7] (2,0) node[label={[font=\footnotesize]right:$B$}] (B) {} -- (0,0);
+
+	\coordinate (Red) at (5,1.7);
+	\coordinate (Black) at (5,1.3);	
+	
+	\draw (4.75,1) -- (4.75,3) -- (5.75,3) -- (5.75,1) -- (4.75,1);
+	\draw (4.85,2.3) -- (4.85,2.9) -- (5.65,2.9) -- (5.65,2.3) -- (4.85,2.3);
+	\node at (5.25,2.6) {$V$};
+	
+	\draw (-2.0,3) -- (-2.3,2) -- (-1.7,1) -- (-2.0,0);
+	\draw (-2.5,3) -- (-2.8,2) -- (-2.2,1) -- (-2.5,0);
+	\draw (-2.5,3) -- (-4,3) -- (-4,0) -- (-2.5,0);
+	
+	\node at (A)[circle,fill,inner sep=1pt,opacity=0.7]{};
+	\node at (B)[circle,fill,inner sep=1pt,opacity=0.7]{};
+	\node at (Red)[circle,fill=red,inner sep=1pt,opacity=1]{};
+	\node at (Black)[circle,fill=black,inner sep=1pt,opacity=1]{};
+	
+	\node [rotate=90] at (-3.3,1.5) {Rest of Circuit};
+	
+	
+	\draw (0,0) -- (-2,0);
+	\draw (0,3) -- (-2,3);
+	
+	\draw [red]   (A) to[out=0,in=180] (Red);
+	\draw [black]   (B) to[out=0,in=180] (Black);
+	
+	
+\end{circuitikz}
+
+\caption{Denoting voltage on a circuit diagram.}
+\label{fig:VoltageConvention}
+\end{center}
+\medskip
+\small
+{We have annotated the voltage across a component connected between terminal $A$ and $B$. Although we could use double subscript notation and assign the voltage variable name $V_{AB}$ we have chose to use the variable name $V$ for this voltage. Thus, to indicate the polarity we use the $+$ and $-$ symbols. This means that to measure the voltage $V$ we would connect the red (positive) lead of the voltmeter to terminal $A$ and connect the black (negative) lead to terminal $B$. Thus, the reading shown on the voltmeter will be the signed value of $V$.}
+
+\end{figure}
+
+
+\begin{figure}
+\begin{center}
+\begin{circuitikz}[american voltages, european resistors, voltage shift=0.5]
+	\draw[opacity=0.7] (0,0) node[label={[font=\footnotesize]below:$B$}] (B) {} to[R, v<=$V$] (0,3) node[label={[font=\footnotesize]above:$A$}] (A) {};
+	%\draw[opacity=0.7] (2,0) node[label={[font=\footnotesize]right:$B$}] (B) {} -- (0,0);
+
+	\coordinate (Red) at (5,1.7);
+	\coordinate (Black) at (5,1.3);	
+	
+	\draw (-2.0,3) -- (-2.3,2) -- (-1.7,1) -- (-2.0,0);
+	\draw (-2.5,3) -- (-2.8,2) -- (-2.2,1) -- (-2.5,0);
+	\draw (-2.5,3) -- (-4,3) -- (-4,0) -- (-2.5,0);
+	
+	\node at (A)[circle,fill,inner sep=1pt,opacity=0.7]{};
+	\node at (B)[circle,fill,inner sep=1pt,opacity=0.7]{};
+	
+	\node [rotate=90] at (-3.3,1.5) {Rest of Circuit};
+	
+	
+	\draw (0,0) -- (-2,0);
+	\draw (0,3) to[short, i<=$I$] (-2,3);
+	
+\end{circuitikz}
+
+\caption{Passive Sign Convention to Define Power}
+\label{fig:PowerDefn}
+
+\end{center}
+\medskip
+\small
+{}
+
+\end{figure}
+
+
+Now we know about current and voltage we are ready to define electric power. Consider Figure \ref{fig:PowerDefn}. We will define the electric power that this component is \emph{consuming}. 
+
+If the component was truly consuming power then the charges would flow from a high to low potential. Under this assumption, $B$ is at a lower potential than $A$, which means $V$ is the energy the component receives as a unit charge moves from $A$ to $B$. However, every second there are $I$ coulombs of charge flowing through the component, hence the rate of work the component can do is the product of $I$ and $V$.
+
+Conversely, if we assume the component is generating power then $B$ would be at a higher potential than $A$. Thus, $V$ would be a negative number, and the magnitude of $V$ corresponds to the energy the component imparts onto a unit charge. Thus, the magnitude of $VI$ gives us the power that the component is generating, and the negative sign indicates generation.
+
+For mathematical expediency, it is usual to define power simply as the product of voltage across the component and current through the component.
+
+\begin{myDefinition}{Electric Power}{def:DefnPower}
+	The electric power consumed by a component is the product of the current flowing through the component and the voltage across the component. The sign convention is that the current flows from $A$ to $B$ and the voltage difference is also from $A$ to $B$. For clarity please refer to Figure \ref{fig:PowerDefn}. Written mathematically:
+	$$P = IV$$
+	The SI unit for electric power is the watt (W). A postive value of $P$ indicates the component is consuming power, while a negative value of $P$ indicates the component is generating power.
+\end{myDefinition}
+
+The engineer must be able to intepret the sign of the power to check whether the component is consuming or generating. So long as the engineer sticks with a consistent sign convention, no confusion should arise. 
+
+
+\newpage
+\subsection{Resistance, Capacitance and Inductance}
+Now we are ready to define some important concepts that are essential in circuit analysis.
+
+There are a group of materials defined as resistive:
+
+\begin{myDefinition}{Resistance}{def:DefnOhm}
+	Materials for which the current density ($\mathbf{J}$) and electric field ($\mathbf{E}$) are related by a linear relationship:
+	$$\mathbf{J} = \sigma \mathbf{E}$$
+	where $\sigma$ is called the conductivity. The inverse of conductivity is called resistivity $\rho = \frac{1}{\sigma}$. If we have a block of resistive material of length $\ell$ and cross-sectional area $A$ then we can define the resistance of that block as:
+	
+	$$
+	R = \rho\frac{\ell}{ A}
+	$$
+	
+	The unit for resistance is the ohm ($\Omega$).
+\end{myDefinition}
+
+In electrical circuits, one of the components we encounter are called resistors, and they are effectively just a block of resistive material with calibrated resistance. The vector form of Ohm's Law is simplified for an ideal resistor:
+\begin{myTheorem}{Resistors}{thm:ThmResistor}
+	A resistor with resistance $R$ as indicated below:
+
+\bigbreak
+\begin{center}
+\begin{circuitikz}[american]
+	\draw (0,0) to[R, v=$V$, i=$I$] (2,0); 
+\end{circuitikz}	
+\end{center}
+\bigbreak
+
+	The voltage across its terminals, and the current flowing through it are related by:
+	$$ V = IR $$
+	
+	This relationship is usually called \emph{Ohm's Law}.
+\end{myTheorem}
+The derivation of \ref{thm:ThmResistor} from \ref{def:DefnOhm} can be found in an electromagnetics textbook.
+
+
+When dealing with charges and voltages, we also define the concept of capacitance.
+\begin{myDefinition}{Capacitance}{def:DefnCap}
+	If a charge of $Q$ is separated from a charge of $-Q$ by a potential difference of $V$, then the capacitance is defined as:
+	$$C = \frac{Q}{V}$$
+	
+	The SI unit of capacitance is the farad (F).
+\end{myDefinition}
+
+As the definition suggests, components called \emph{capacitors} are assembled by have metallic plates separated by a dielectric medium. For such a component:
+\begin{myTheorem}{Capacitors}{thm:ThmCap}
+	A capacitor with capacitance $C$ is represented by the symbol:
+
+\bigbreak
+\begin{center}
+\begin{circuitikz}[american]
+	\draw (0,0) to[C, v=$v(t)$, i=$i(t)$] (2,0); 
+\end{circuitikz}	
+\end{center}
+\bigbreak
+
+	
+	The voltage across its terminals, and the current flowing through it are related by:
+	$$ i(t) = C \frac{d}{dt}v(t) $$
+	
+	Note we have used simple case for currents and voltages to emphasise they are functions of time.
+\end{myTheorem}
+Proof:
+From \ref{def:DefnCap} $C=q(t)/v(t) \implies q(t) = Cv(t)$. Now differentiating both sides with respect to time yields:
+$$
+\frac{d}{dt} q(t) = C \frac{d}{dt} v(t) \implies i(t) = C \frac{d}{dt} v(t)
+$$
+
+where we have \ref{def:DefnCurrent} that current is the time derivative of charge.$\quad\qedsymbol$
+
+So far we have exclusively been talking about electric charges and electric fields. However, this is not the full story. When a current flows, it creates a magnetic field, according to the \emph{Biot Savart Law}. We use $\mathbf{B}$ to denote the magnetic flux density. If we integrate this vector field perpendicular to a surface $S$ then we calculate the magnetic flux perpendicularly passing through that surface.
+
+\begin{myDefinition}{Inductance}{def:DefnInd}
+	If a current $I$ is flowing through a conductor, and if $\Phi$ is the magnetic flux orthogonal to the surface enclosed by the conductor, then inductance is defined as:
+
+	$$L = \frac{\Phi}{I}$$
+	
+	The SI unit for inductance is the henry (H).
+\end{myDefinition}
+
+To increase inductance, we can wrap the conductor in a coil which increases the strength of the magnetic field. Such components are called inductors.
+
+\begin{myTheorem}{Inductors}{thm:ThmInd}
+	A inductor with inductance $L$ is represented by the symbol:
+
+\bigbreak
+\begin{center}
+\begin{circuitikz}[american]
+	\draw (0,0) to[L, v=$v(t)$, i=$i(t)$] (2,0); 
+\end{circuitikz}	
+\end{center}
+\bigbreak
+
+	
+	The voltage across its terminals, and the current flowing through it are related by:
+	$$ v(t) = L \frac{d}{dt}i(t) $$
+	
+	Note we have used simple case for currents and voltages to emphasise they are functions of time.
+\end{myTheorem}
+Proof:
+From \ref{def:DefnInd} $L=\phi(t)/i(t) \implies \phi(t) = Li(t)$. Now differentiating both sides with respect to time yields:
+$$
+\frac{d}{dt} \phi(t) = L \frac{d}{dt} i(t) \implies v(t) = L \frac{d}{dt} i(t)\quad\qedsymbol
+$$
+
+Note we have made use of Faraday's Law in the final step. We will cover the mathematics and sign convention of Faraday's Law in Chapter 3 when we study Electric Machines. Such details presented here may obfuscate our relatively straightforward goal of defining inductors and proceeding to circuit analysis.
+
+For clarity the common components we encounter in an electric circuit are summarised below. For the time being, this is all the electromagnetics we will require.
+\vfill
+\begin{table}[h]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Component} & \textbf{Symbol} & \textbf{$I$--$V$ Relationship} \\ \hline
+Resistor           &
+\begin{circuitikz}[american]
+	\draw (0,0) to[R, v=$v(t)$, i=$i(t)$] (2,0); 
+\end{circuitikz}              
+									& $v(t) = R i(t)$                         \\ \hline
+Capacitor          &
+\begin{circuitikz}[american]
+	\draw (0,0) to[C, v=$v(t)$, i=$i(t)$] (2,0); 
+\end{circuitikz}              
+									& $i(t) = C \frac{d}{dt} v(t)$              \\ \hline
+Inductor           &
+\begin{circuitikz}[american]
+	\draw (0,0) to[L, v=$v(t)$, i=$i(t)$] (2,0); 
+\end{circuitikz}              
+									 & $v(t) = L \frac{d}{dt} i(t)$              \\ \hline
+\end{tabular}
+\end{table}
+
+\vfill
+
+\newpage
+\section{Circuit Analysis}
+
+An electric circuit is a path along which charge flows. We can mathematically model a circuit as a graph, with each vertex called ``node'' and along each edge a component. These components could be the resistors, capacitors or inductors we defined earlier, or they could be the sources we define just below.
+
+The benefit of describing a circuit with a mathematical model is that is allows us to find the voltages, currents and power consumption of each component. Furthermore we can define stability criteria in a rigorous manner. Thus, the ability to solve a circuit is indispensible for an electrical engineer.
+
+\subsection{Sources}
+
+Aside from resistors, capacitors and inductors, the other elements that we will commonly use in our circuits are sources. We define an ideal voltage source as:
+
+\begin{myDefinition}{Independent Voltage Source}{def:DefnVoltageSource}
+	A component that can maintain the voltage across its two terminals, regardless of the current flowing through it. The symbol for a voltage source is:
+\begin{center}
+\begin{circuitikz}[american]
+	\draw (0,0) to[V, v=$v_s(t)$] (2,0); 
+\end{circuitikz}
+\end{center}  	
+\end{myDefinition}
+
+We will also encounter current sources which can be defined as:
+\begin{myDefinition}{Independent Current Source}{def:DefnCurrentSource}
+	A component that can maintain the current flowing through it, regardless of the voltage across its terminals. The symbol for a current source is:
+\begin{center}
+\begin{circuitikz}[american]
+	\draw (0,0) to[I, i=$i_s(t)$] (2,0); 
+\end{circuitikz}
+\end{center}  	
+\end{myDefinition}
+
+It should be evident that ideal voltage sources and ideal current sources do not exist in real life. The typical sources in a real life circuit may be a battery, a photovoltaic cell or an alternator. Each of these converts different forms of energy (chemical, light, mechanical, etc.) into electrical energy. In later chapter, we will see how we can model these realistic sources using the ideal sources we have defined above.
+
+\subsection{Kirchhoff's Laws}
+
+There are two theorems that are widely used in circuit analysis. In order to properly apply these theorems it is important to clearly annotate the direction of currents and the polarity of voltages.
+
+\begin{myTheorem}{Kirchhoff's Current Law (KCL)}{thm:ThmKCL}
+	The algebraic sum of all the currents meeting at a node is zero.
+\end{myTheorem}
+Proof: This follows from the conservation of charge. A node is just a piece of conductor, hence in a vacuum it will not develop a net charge. (In practice, if we observe charge building up on the node of our circuit, this is an indication there is parasitic capacitance at that node of the circuit.) $\quad\qedsymbol$
+
+ 
+\begin{myTheorem}{Kirchhoff's Voltage Law (KVL)}{thm:ThmKVL}
+	The directed sum of voltages around a closed loop is zero.
+\end{myTheorem}
+Proof: In the previous section, we made a remark that we that the electric field is usually treated as being conservative. Strictly speaking, this is only true when there is no time varying magnetic field in the region of our circuit. To make this assumption more valid, we usually consider our components as ``lumped''  which means they self contain their magnetic fields.
+
+The closed path integral in a conservative field is equal to zero, which is the mathematical basis of KVL. $\quad\qedsymbol$
+
+\newpage
+\subsection{Time domain solution}
+Below we give the necessary steps to solve a circuit in the time domain:
+\begin{enumerate}
+\item{Draw a schematic of the circuit and annotate all unknown currents and voltages.}
+\item{Count the number of unknowns.}
+\item{For each resistor, capacitor and inductor, write its current--voltage relation. Count the number of equations written so far.}
+\item{Use KCL and KVL to write linearly independent equations until the number of equations equals the number of unknowns.}
+\item{Use algebra to solve the system of equations.}
+\item{If capacitors or inductors are present in the circuit treat the voltage across each capacitor and the current across each inductor as the intial conditions.}
+\end{enumerate}
+
+\subsection{Series RLC circuit}
+
+To make the above procedure clear we will illustrate with an example. Shown in Figure \ref{fig:SeriesRLC} is a series RLC circuit that we will be analysing. The diagram clearly indicates the unknowns in blue colour. Furthermore, the direction of all the currents, and polarity of the voltages are indicated. (Observe that $i_s(t)$ is directed out of the source. Often we define current in this way for sources and even though it violates the passive sign convention described in the previous section, as long as the diagram is clear no confusion should arise.)
+
+
+\begin{figure}[b]
+\begin{center}
+\begin{circuitikz}[american, voltage shift=0.5]
+	\draw[opacity=0.7] (0,0)  to[V,invert, v=$V_S$, i^>=\textcolor{blue}{$i_S(t)$}] (0,3) to[R=$R$, v=\textcolor{blue}{$v_R(t)$}, i=\textcolor{blue}{$i_R(t)$}] (3,3) to[L=$L$, v=\textcolor{blue}{$v_L(t)$}, i=\textcolor{blue}{$i_L(t)$}] (6,3) to[C=$C$, v=\textcolor{blue}{$v_C(t)$}, i=\textcolor{blue}{$i_C(t)$}] (9,3) -- (9,0) -- (0,0);
+\end{circuitikz}
+
+\caption{Series RLC circuit}
+\label{fig:SeriesRLC}
+
+\end{center}
+\medskip
+\small
+{}
+\end{figure}
+
+
+Clearly there are seven unknowns. Immediately we can write three equations using the current-voltage relationship of our components. For conciseness we will use Lagrange notation to indicate time derivatives.
+
+\begin{align}
+v_R(t) &= Ri_R(t) \label{eg01_1}\\
+v_L(t) &= Li_L'(t) \label{eg01_2}\\
+i_C(t) &= Cv_C'(t) \label{eg01_3}
+\end{align}
+
+There are three nodes for which we can write three equations using KCL:
+\begin{align}
+i_S(t) &= i_R(t) \label{eg01_4}\\
+i_R(t) &= i_L(t) \label{eg01_5}\\
+i_L(t) &= i_C(t) \label{eg01_6}
+\end{align}
+
+Finally, there is one loop for which we use KVL:
+\begin{align}
+v_R(t) + v_L(t) + v_C(t) &= V_S \label{eg01_7}
+\end{align}
+
+
+Now we have seven equations for seven unknowns, our circuit analysis is finished. All that remains is to use algebra to solve these equations. As described in the procedure, it is a good idea to start off with either capacitor voltage or inductor current. Both require similar amount of work so we will first solve for $v_C$.
+
+\begin{align}
+\text{Put \eqref{eg01_1}, \eqref{eg01_2} into \eqref{eg01_7}}\quad\implies\quad Ri_R(t) + Li_L'(t) + v_C(t) &= V_S \label{eg01_8}\\
+\text{Put \eqref{eg01_5}, \eqref{eg01_6} into \eqref{eg01_8}}\quad\implies\quad Ri_C(t) + Li_C'(t) + v_C(t) &= V_S \label{eg01_9}\\
+\text{Put \eqref{eg01_3} into \eqref{eg01_9}}\quad\implies\quad RCv_C'(t) + LCv_C''(t) + v_C(t) &= V_S \label{eg01_10}
+\end{align}
+
+Now we can rearrange \eqref{eg01_10} and divide through by $LC$ which is a non-zero number:
+
+\begin{align}
+v_c''(t) + \frac{R}{L}v_c'(t) + \frac{1}{LC}v_c(t) = \frac{V_S}{LC} \label{eg01_11}
+\end{align}
+
+This is a standard second order differential equation. To find the general solution we need to solve the homogenous and particular solutions. Since our voltage source is a constant of $V_S$ we can guess that $v_C(t) = V_S$ will be the particular solution and verify:
+
+$$ \mathrm{LHS} = 0 +  0  + \frac{1}{LC}V_S = RHS $$
+
+Of course, if the voltage source is an arbitrary function, finding the particular solution is much more difficult. Next to find the homogenous solution we must solve the characteristic polynomial:
+
+$$
+\lambda^2 + \frac{R}{L}\lambda + \frac{1}{LC} = 0
+$$
+
+We can find the roots using the quadratic formula, and let us call them $\lambda_1, \lambda_2 \in \mathbb{C}$. (If $\lambda_1$ and $\lambda_2$ are not real numbers, then they must be complex conjugates of each other, since the coefficients of the characteristic equation were all real.) This allows us to write the general solution as the supposition of the homogenous and particular solution:
+
+\begin{align}
+v_c(t) = A_1 e^{\lambda_1 t} + A_2 e^{\lambda_2 t} + V_S \label{eg01_12}
+\end{align}
+
+where $A_1, A_2 \in\mathbb{C}$ are constants to be determined from the initial conditions. One initial condition is found by evaluating the capacitor voltage at $t=0$: 
+\begin{align}
+v_C(0) = A_1 + A_2 + V_S\label{eg01_13}
+\end{align}
+
+To find the second intial condition, we need to find the inductor current and evaluate it at $t=0$. To do this we substitute \label{eg01_12} into \label{eg01_3} and make use of \label{eg01_6}:
+
+\begin{align}
+i_L(t) = i_C(t) &= Cv_C'(t) = C\left(\lambda_1 A_1e^{\lambda_1t} + \lambda_2 A_2e^{\lambda_2t}\right) \nonumber\\
+&= C\lambda_1 A_1e^{\lambda_1t} + C\lambda_2 A_2e^{\lambda_2t} \nonumber \\
+\implies i_L(0) &= C\lambda_1 A_1 + C\lambda_2 A_2 \label{eg01_13}
+\end{align}
+
+Thus, the coefficients $A_1$ and $A_2$ are found by solving the following linear system:
+\begin{align*}
+\begin{cases}
+A_1 + A_2 &= v_C(0^{-}) - V_S \\
+C\lambda_1 A_1 + C\lambda_2 A_2 &= i_L(0^{-})
+\end{cases}
+\end{align*}
+
+We should emphasise the initial conditions are taken as the capacitor voltage and inductor current since these are smooth differentiable functions. Thus we can fairly safely assume $v_C(0^-) = v_C(0^+)$ and $i_L(0^-) = i_L(0^+)$. Note that it would be erroneous to make such an assumption about other unknowns in our system. For example, we have no way of knowing that the resistor voltage does not have a discontinuity at $t=0$.
+
+This concludes our analysis of the series RLC circuit. Hopefully it can be appreciated that as the system gets larger (i.e. more components) the algebra becomes more involved. Even for this example, we were greatly convenienced by the fact we did not have to search too hard for a particular solution.
+
+\section{Linear circuits}
+The circuits we have so far been considering are made of ideal sources, resistors, capacitors and inductors. As we are about to see, such circuits are called \emph{linear}. This can be contrasted with circuits that have semiconductor components (e.g. diodes, transistors) which are considered non-linear. Analysing non-linear circuits is difficult, and in such cases we often linearise it around an operating point using a small signal model. 
+
+Before we tackle such problems it is worthwhile to be explicit with our definition of linearity. What is linearity? What does it mean to say a circuit is linear? Under what conditions is a circuit linear? These are important questions, and in order to answer them properly, in this section we will be working from first principles. In the next section, we will see how linearity of a circuit allows the use of the Laplace transform, and the chapter will conclude by looking how we can numerically solve linear circuits.
+
+\subsection{What is linearity?}
+
+To begin with we will define a linear transform:
+
+\begin{myDefinition}{Linearity}{def:DefnLinearity}
+	Let $V$ and $W$ be two vector spaces. If $T:V\to W$ satisfies:
+
+$$ T(\mathbf{u}+k\mathbf{v}) = T(\mathbf{u}) +kT(\mathbf{v})$$
+
+for all $\mathbf{u},\mathbf{v}\in V$ and all scalars $k$, then it is a linear transformation.
+\end{myDefinition}
+
+It should be noted that our definition of linearity applies quite generally to any transformation acting on a vector space. We will treat our voltage and current signals as continuous time functions, an we will call the space of all possible functions $\mathcal{C}$. To get some experience, the following theorem states that scaling, differentiating and integrating are linear transformations.
+
+\begin{myTheorem}{Common linear transforms}{thm:ThmCommonTransforms}
+	If $\mathcal{C}$ is the space of continuous functions, and $\mathcal{C}_1$ is the a subspace containing all the continuous functions with a continuous first derivative. Then the following transforms are all linear:
+	
+	\begin{itemize}
+	\item{G: $\mathcal{C}\to\mathcal{C}$ where $G[x] (t) = \alpha x(t)\quad\forall\quad t$ for some scalar $\alpha$.}
+	\item{D: $\mathcal{C}_1\to\mathcal{C}$ where $D[x] (t) = \frac{d}{dt}x(t)\quad\forall\quad t$}
+	\item{J: $\mathcal{C}\to\mathcal{C}_1$ where $J[x] (t) = \int_0^t x(\tau) \,d\tau\quad\forall\quad t$}
+	\end{itemize}
+\end{myTheorem}
+
+Proof: This is just practise in using the definition of linearity and is left as an exercise for the reader. The answer can be found in any linear algebra textbook. $\quad\qedsymbol$
+
+\subsection{Linearity of a circuit}
+
+We have just seen that linearity is a property of a transformation. However, it still might not be clear how do we know if an entire circuit is linear. Before we can answer this important question we need to define some notation so that we can represent an electrical circuit as a mathematical transformation, and then check its linearity under Definition \ref{def:DefnLinearity}.
+
+Let us consider a circuit with with $m_V$ voltage sources, $m_I$ current sources, $m_R$ resistors, $m_C$ capacitors and $m_L$ inductors. Now we will name our voltage and current functions. Once again we will assume our voltage and current signals live in a space of continuous time functions $\mathcal{C}$.
+
+\begin{itemize}
+\item{For $1\leq k\leq m_R$ let $v_{R,k}$ be the voltage across the $k^{th}$ resistor and $i_{R,k}$ be the current through the $k^{th}$ resistor.}
+\item{For $1\leq k\leq m_L$ let $v_{L,k}$ be the voltage across the $k^{th}$ inductor and $i_{L,k}$ be the current through the $k^{th}$ inductor.}
+\item{For $1\leq k\leq m_C$ let $v_{C,k}$ be the voltage across the $k^{th}$ capacitor and $i_{C,k}$ be the current through the $k^{th}$ capacitor.}
+\item{For $1\leq k\leq m_V$ let $i_{V,k}$ be the current through the $k^{th}$ voltage source.}
+\item{For $1\leq k\leq m_I$ let $v_{I,k}$ be the voltage across the $k^{th}$ current source.}
+\end{itemize}
+
+
+Hopefully, we can appreciate that these are the unknown variable in our circuit. Counting above, there are a total of $n = 2m_R + 2m_L + 2m_C + m_V + m_I$ unknowns. Let us define a vector as follows:
+
+\begin{align*}
+\mathbf{y} = [ &i_{L,1}, \ldots ,i_{L,m_L}, v_{C,1}, \ldots ,v_{C,m_C}, v_{L,1}, \ldots ,v_{L,m_L}, i_{C,1}, \ldots ,i_{C,m_C}, \\
+				&v_{R,1}, \ldots ,v_{R,m_R}, i_{R,1}, \ldots ,i_{R,m_R}, v_{I,1}, \ldots, v_{I,m_I}, i_{V,1}, \ldots, i_{V,m_V}]^T
+\end{align*}
+
+Now let us define the known variables, which are the voltages across voltage sources and the current through the current sources, and the initial conditions.
+\begin{itemize}
+\item{For $1\leq k\leq m_V$ let $v_{V,k}\in\mathcal{C}$ be the voltage across the $k^{th}$ voltage source.}
+\item{For $1\leq k\leq m_I$ let $i_{I,k}\in\mathcal{C}$ be the current through the $k^{th}$ current source.}
+\item{For $1\leq k\leq m_L$ let $I_{0,k}\in\mathbb{R}$ be the current through the $k^{th}$ inductor at $t=0^-$.}
+\item{For $1\leq k\leq m_C$ let $V_{0,k}\in\mathbb{R}$ be the voltage across the $k^{th}$ capacitor at $t=0^-$.}
+\end{itemize}
+
+Let us define a vector as follows:
+\begin{align*}
+\mathbf{x} = [ &v_{V,1}, \ldots ,v_{V,m_V}, i_{I,1}, \ldots ,i_{I,m_I}, V_{0,1}, \ldots , V_{0,m_C}, I_{0,1}, \ldots, I_{0,m_L}]^T
+\end{align*}
+
+We can think of our circuit as mapping $\mathbf{x}$ to $\mathbf{y}$. Thus our circuit is a transformation defined by:
+\begin{align*}
+\mathbf{y} = T(\mathbf{x})
+\end{align*}
+
+For any two inputs $\mathbf{x}_1,\mathbf{x}_2$ let $\mathbf{y}_1 = T(\mathbf{x}_1)$ and $\mathbf{y}_2 = T(\mathbf{x}_2)$. For any scalar $k$, the circuit is linear if and only if:
+
+\begin{align*}
+T(\mathbf{x}_1 + k \mathbf{x}_2) = \mathbf{y}_1 + k \mathbf{y}_2
+\end{align*}
+
+
+\begin{myTheorem}{Circuit Linearity}{thm:ThmCircuitLinearity}
+	A sufficient condition to check if a circuit is linear is if all the following are true:
+	\begin{itemize}
+		\item{It is made up exclusively of ideal voltage sources, current sources, resistors, inductors or capacitors.}
+		\item{The circuit obeys Kirchoff's Laws.}
+	\end{itemize}
+\end{myTheorem}
+
+Proof: When solving the circuit we must write $m_R + m_L + m_C$ equations using the component equations. For resistors we get $m_R$ linearly independent equations of the form:
+
+$$
+v_{R,j}(t) - R_j i_{R,j}(t) = 0 \iff i_{R,j}(t) - \frac{1}{R_j} v_{R,j}(t) = 0
+$$
+
+Thus we can think of the resistor equations as being defined by a linear operator acting on $\mathbf{y}$. In this notation, each resistor equation is written as $T_{R,j} (\mathbf{y}) = 0$.
+
+For the inductors in our circuit, we get $m_L$ linearly independent equations of the form:
+$$
+v_{L,j}(t) - L_j i_{L,j}'(t) = 0 \iff i_{L,j}(t) - \frac{1}{L_j}\int_0^t v_{L,j}(\tau)\,d\tau\quad = I_{0,j}
+$$
+We can see that the left hand side is a linear transformation of $\mathbf{y}$. However, since the right hand side can contain the initial condition, we can treat it as the output of a linear transform acting on $\mathbf{x}$ which contains the intial conditions. In this notation, each inductor equation can be written as $T_{L,j}^1 (\mathbf{y}) = T_{L,j}^2 (\mathbf{x})$.
+
+Next, for capacitors we get $m_C$ linearly independent equations of the form:
+$$
+v_{C,j}(t) - \frac{1}{C_j}\int_0^t i_{C,j}(\tau)\,d\tau = V_{0} \quad\iff i_{C,j}(t) - C_j v_{C,j}'(t) =0
+$$
+Once again, we observe that the left hand side is a linear transformation of $\mathbf{y}$ while the right hand side is a linear transformation of $\mathbf{x}$. Thus, each capacitor equation can be written as $T_{C,j}^1 (\mathbf{y}) = T_{C,j}^2 (\mathbf{x})$.
+
+Hence what we have shown is that $1\leq j\leq(m_R + m_L + m_C)$ component equations can be expressed as:
+$$
+T_{y,j} (\mathbf{y}) = T_{x,j}(\mathbf{x})
+$$
+
+where $T_{x,j}$ and $T_{y,j}$ are linear transformation. Recall, that we defined the $\mathbf{y}_1$ and $\mathbf{y}_2$ were outputs of the circuit for inputs $\mathbf{x}_1$ and $\mathbf{x}_2$, hence they must satisfy the component equations:
+
+\begin{align*}
+T_{y,j}(\mathbf{y}_1) = T_{x,j}(\mathbf{x}_1) \\
+T_{y,j}(\mathbf{y}_2) = T_{x,j}(\mathbf{x}_2)
+\end{align*}
+
+For arbitrary scalar $k$, let us check if the vectors $(\mathbf{x}_1+k\mathbf{x}_2)$ and $(\mathbf{y}_1+k\mathbf{y}_2)$ satisfy the component equations:
+\begin{align*}
+\mathrm{LHS} &= T_{y,j}(\mathbf{y}_1+k\mathbf{y}_2) = T_{y,j}(\mathbf{y}_1)+kT_{y,j}(\mathbf{y}_2) = T_{x,j}(\mathbf{x}_1)+kT_{x,j}(\mathbf{x}_2) \\ &= T_{x,j}(\mathbf{x}_1+k\mathbf{x}_2)
+\end{align*}
+
+Note we have used the linearity of the transforms $T_{y,j}$ and $T_{x,j}$. So far we have shown that $(\mathbf{y}_1+k\mathbf{y}_2)$ is a plausible solution to our circuit since it satisfies the component equations. However, we still have to prove that it satisfies Kirchoff's Law when the input is $(\mathbf{x}_1+k\mathbf{x}_2)$.
+
+Since there are $n=2m_R + 2m_L + 2m_C + m_V + m_I$ unknowns and we wrote $m_R + m_L + m_C$ equations using the component relations, that means we need to use Kirchoff's Laws to write $m_R + m_L + m_C + m_V + m_I$ equations.
+
+As we showed in the previous section, for a connected circuit (in the event there are islands, these could be treated as separate circuit without loss of generality), Kirchoff's Laws yield $m$ linearly independent equations where $m$ is the number of branches. But the number of branches is equal to the number of components, hence $m = m_R + m_L + m_C + m_V + m_I$. It is evident the the equations arising from Kirchoff's Laws are linearly independent from the component equation we wrote before. Thus, we can be sure the we can write the same number of linearly independent equations as unknowns. When we have the same number of linearly independent equations as unknowns, if a solution exists, then it must be unique.
+
+Each KCL and KVL equation can be rearranged to the following form:
+
+\begin{align*}
+\sum_{j\in S_x} \alpha_j (\mathbf{x})_j &= \sum_{j\in S_y} \beta_j (\mathbf{y})_j \\
+\implies\quad T_{x,j}(\mathbf{x}) &= T_{y,j}(\mathbf{y})
+\end{align*}
+
+Note that $\alpha_j,\beta_j\in\{-1,1\}$ are just coefficients that indicate the polarity and $S_y$ are to choose the relevant signals from $\mathbf{y}$ that appear in the particular KCL or KVL equation. Similarly $S_x$ is just choosing the sources that appear in the particular equation. Clearly, these summations are linear operations which we have named as $T_y$ and $T_x$.
+
+Recall that we define $\mathbf{y}_1$ and $\mathbf{y}_2$ as the image of the circuit for inputs $\mathbf{x}_1$ and $\mathbf{x}_2$. Therefore these input output pairs must satisfy the equation:
+\begin{align*}
+T_x(\mathbf{x}_1) &= T_y(\mathbf{y}_1)\\
+T_x(\mathbf{x}_2) &= T_y(\mathbf{y}_2)
+\end{align*}
+
+Now let us consider what happens when we consider the vector $(\mathbf{x}_1+k\mathbf{x}_2)$ for some arbitrary scalar $k$:
+\begin{align*}
+\mathrm{LHS} = T_x(\mathbf{x}_1+k\mathbf{x}_2) &= T_x(\mathbf{x}_1)+kT_x(\mathbf{x}_2) = T_y(\mathbf{y}_1)+kT_y(\mathbf{y}_2) = T_y(\mathbf{y}_1+k\mathbf{y}_2)
+\end{align*}
+
+Note that we have used the linearity of $T_{x,j}$ and $T_{y,j}$ above. What we have shown is that the output vector $(\mathbf{y}_1+k\mathbf{y}_2)$ satisfies this particular equation when the input is $(\mathbf{x}_1+k\mathbf{x}_2)$.
+
+But we were considering the general form of any KCL or KVL equation, hence we have shown the output vector $(\mathbf{y}_1+k\mathbf{y}_2)$ satisfies all the KCL and KVL equation when the input is $(\mathbf{x}_1+k\mathbf{x}_2)$.
+
+So to summarise, we have shown that $(\mathbf{y}_1+k\mathbf{y}_2)$ must be the output of the circuit when the input is $(\mathbf{x}_1+k\mathbf{x}_2)$. This proves that the circuit is linear. $\quad\qedsymbol$
+
+\subsection{Consequences of linearity}
+One of the most useful results of linearity is that we are allowed to use superposition on our circuit. This basically means that we can consider how our circuit responds to sources independently and then sum these responses to see how the circuit behaves when all the sources are on.
+
+The linearity of a circuit also allows us to solve the circuits response when all initial conditions are zero. This is called the zero state response, and as we will see in the following chapter it is used heavily to study the system in steady state.
+
+Then we can solve the circuit when all sources are turned off, and see how different initial conditions of the circuit change the output. Due to the linearity which we have just proved, the actual output of the circuit will be the superposition of the zero input and zero state solutions.
+
+\newpage
+\section{Laplace domain solution}
+In this section we will see how to find the general solution of any circuit. When we were solving the series RLC circuit, we observed that a lot of the difficult algebra arose from the fact we were solving a differential equation. The motivation of the Laplace transform is to convert differential equations into algebraic ones. Of course these ``conversion'' process requires some mathematical machinery, how these results are often tabulated which makes life easier for the engineer.
+
+We begin with the definition of the Laplace Transform:
+
+\begin{myDefinition}{Laplace Transform}{def:DefnLaplace}
+	Let $x\in W$ be a continuous time signal. The Laplace transform of $x$ is:
+	
+	\begin{align*}
+	\mathcal{L}\{x\}(s) = \int_{0^-}^{\infty} x(t) e^{-st}\, dt \quad\text{for all } s\in\mathrm{RoC}(x)
+	\end{align*}
+
+	For convenience we often write $X(s) =  \mathcal{L}\{x\}(s)$, and as such $x$ and $X$ are called ``Laplace pairs'', often denoted by $x \xleftrightarrow{\mathcal{L}} X$.
+	\bigbreak
+	The domain of $X$ is all values of $s$ for which the above integral converges. We call this the \emph{region of convergence} which is defined by:
+	
+	\begin{align*}
+	\mathrm{RoC}(x) = \left\{s\in\mathbb{C}: \int_{0^-}^{\infty} |x(t) e^{-st}|\, dt < \infty\right\}
+	\end{align*}
+\end{myDefinition}
+
+
+Observe that the output of the Laplace transform is no longer a function of time. Instead it is a function of a complex number $s$. This might seem like unnecessarily complication -- after all, aren't we interested in how our circuit behaves if the time domain? However as we will see in the future chapters working is the $s$-domain has certain benefits, such as assessing the ``stability'' of the system.
+
+Of course, we also need a method of going from the $s$-domain back to the time domain. For this, there is an inverse Laplace transform. This is made possible because the Laplace transform does inject for sectionally continuous functions. However, proving this, or even evaluating inverse Laplace transforms is not something we will have the privilege of doing. Instead, we will go back and forth between the the time and Laplace domain by using table of transforms which can be found at the end of these notes.
+
+Now we will state two properties of the Laplace transform that make it most useful.
+\begin{myTheorem}{Laplace Transform Properties}{thm:ThmLaplaceProperties}
+	Let $f \xleftrightarrow{\mathcal{L}} F$ and $g \xleftrightarrow{\mathcal{L}} G$. For any scalar $k$, the Laplace transform has the following properties:
+	
+	\begin{itemize}
+		\item Linearity. $\mathcal{L}\{f + kg\}(s) = F(s) + k G(s)$
+		\item Time domain differentiation. $\mathcal{L}\left\{\frac{df}{dt}\right\}(s) = s F(s) - f(0^-)$
+	\end{itemize}
+\end{myTheorem}
+Proof: The linearity of the Laplace transform follows from the linearity of integration. To prove the time differentiation property let us \ref{def:DefnLaplace} so that:
+
+\begin{align*}
+\mathcal{L}\left\{\frac{df}{dt}\right\}(s) = \int_{0^-}^{\infty} \frac{df}{dt}(t) e^{-st}\, dt
+\end{align*}
+
+To evaluate this integral let us define the:
+\begin{alignat*}{3}
+u(t) &= e^{-st},\quad &v'(t) &= \frac{df}{dt}(t) \\
+u'(t) &= -se^{-st},\quad &v(t) &= f(t) + C_1
+\end{alignat*}
+where $C_1$ is an arbitrary integration constant. Now we can use integration by parts as follows:
+
+\begin{align*}
+\int_{0^-}^{\infty} u(t) v'(t) \,dt &= \left[ u(t) v(t) \right]_{0^-}^\infty - \int_{0^-}^{\infty} u'(t) v(t) \,dt \\
+\implies \int_{0^-}^{\infty} \frac{df}{dt}(t) e^{-st}\, dt &= \left[ e^{-st}\left(f(t)+C_1\right)\right]_{0^-}^\infty - \int_{0^-}^{\infty} \left(-se^{-st}\right)\left(f(t)+C_1\right)\,dt \\
+&= 0 - \left(f(0^-)+C_1\right) + s \left(\int_{0^-}^{\infty} f(t) e^{-st}\,dt + \int_{0^-}^\infty C_1 e^{-st}\,dt \right) \\
+&= -f(0^-) -C_1 + s F(s) - \frac{s}{s} \left[C_1 e^{-st}\right]_{0^-}^\infty \\
+&= sF(s) -f(0^-) - C_1 - (0 - C_1) = sF(s) - f(0^-)\quad\qedsymbol
+\end{align*}
+
+Recall our plan is to transform our voltage and current signals into the Laplace domain. So we are interested in what will happen to our circuit equations. The linearity property of the Laplace tranform means that the equations we derived from Kirchoff's laws will have an identical form. This is because KCL and KVL equations are just the signed summations of our signals so this summation can be performed in the Laplace domain.
+
+However, our component equations will be different in the Laplace domain. These are given in the following theorem:
+
+\begin{myTheorem}{Component Equations in Laplace Domain}{thm:ThmLaplaceComponents}
+	Let $v$ be the voltage across a component and $i$ be the current through the component. Let $V = \mathcal{L}\{v\}$ and $I = \mathcal{L}\{i\}$.
+	
+	\begin{itemize}
+		\item{If the component is a resistor, with resistance $R$, then the component equation is $V(s) - RI(s) = 0$}
+		\item{If the component is an inductor, with inductance $L$, then the component equation is $sLI(s) - V(s) = Li(0^-)$}
+		\item{If the component is a capacitor, with capacitance $C$, then the component equation is $sCV(s) - I(s)= Cv(0^-)$}
+	\end{itemize}
+\end{myTheorem}
+Proof: We use the linearity property of the Laplace to achieve the equation for a resistor. For the inductor, let us apply the Laplace transform on both sides of the equation and make use of the differentiation property:
+$$
+\mathcal{L}\{v\} = \mathcal{L}\left\{L\frac{di}{dt}\right\} \implies V(s) = L\left( sI(s) - i(0^-)\right) \implies sLI(s) - V(s) = Li(0^-)
+$$
+We do something similar for the capacitor equation:
+$$
+\mathcal{L}\{i\} = \mathcal{L}\left\{C\frac{dv}{dt}\right\} \implies I(s) = C\left( sV(s) - v(0^-)\right) \implies sCV(s) - I(s) = Cv(0^-) \quad\qedsymbol
+$$
+
+We note that in the Laplace domain, all the component equations are fully algebraic: there is no differentiation or integration. Futhermore, we can verify the left hand side of the equations is a linear transformation of our unknown signals while the right hand side is a linear transformation of the intial condition. Thus, using the same logic we argued in the previous section, it is apparent that the circuit is linear in the Laplace domain. This allows to make use of superposition if we desire to do so.
+
+The benefit of using the Laplace transform to solve the circuit is that it automatically takes into consideration the initial conditions (capacitor volatages and inductor currents). When solving the differential equation explicitly, we were required to find a homogenous and particular solution and then find value for our integration constants by matching to the initial conditions. None of this trouble is required for the Laplace transform method, hence it is the best method to find the analytical solution of a circuit. The general procedure is summarised below:
+
+\begin{enumerate}
+\item{Draw the circuit and annotate all the currents and voltages}
+\item{Count the number of unknowns}
+\item{Find the Laplace transform of each source signal using a table of transforms}
+\item{For each resistor, inductor and capacitor, write its component equation in the Laplace domain.}
+\item{Use Kirchhoff's Laws to write the remain equations, until the total number of equations equal to number of unknowns.}
+\item{Use algebra to solve the system of equations and find a solution for the unknown signals in the Laplace domain.}
+\item{Use a table of transform to convert these solutions into the time domain.}
+\end{enumerate}
+
+In the next section we will look at how numerical solvers can be used to solve a circuit when an analytical solution is not needed.
+
+\newpage
+\section{Numerical Methods}
+In this section we will be explaining how a circuit constructed out of resistors, inductors, capacitors, voltage sources and current sources can be solved on computers. The first step is finding a good way to describe the circuit to a computer. Then we would like the computer to construct all the circuit equations and solve for all the unknowns.
+
+\subsection{Conceptual Idea}
+
+From previous sections we have seen that circuit analysis gives rise to a system of coupled first order ordinary differential equations (ODEs). In fact the number of differential equations is equal to the number of inductors and capacitors. One conceptually easy way to numerically solve the circuit is to treat the capacitor voltages as voltage sources and inductor currents as current sources for an instant in time. This is logical since we do not expect capacitor voltages or inductor currents to change instantaneously. Thus, to solve the circuit for a point in time we would just have resistors and voltage and current sources. Once the circuit is solved we can update the values of the voltage sources we are using for capacitors and values of the current sources we are using for inductors. This would correspond to the circuit at the next instant in time, which we can subsequently solve.
+
+Obviously the time step, which we will call $\Delta t$, is an important parameter to ensure that our solution in converging to the actual solution. Nevertheless, the method outlined above is a viable way of solving the circuit numerically.
+
+To make this approach slightly more sophisticated we can call the capacitor voltages and inductor currents the \emph{states} of our system. Then we can try to write the time derivative of our states as a function of our current states. Conceptually, we can think of a state as something that has memory -- something that requires an initial condition. We also hope to write the other unknowns of our circuit (resistor voltages and currents, voltage source current, and current source voltage) as a function of our states.
+
+We will try to make the most of the notation we defined before, so once again $m_L$ and $m_C$ are the number of inductors and capacitors in our circuit. Thus our system has $m_L + m_C$ states. Once again, we will define $\mathbf{y}$ as a vector of all of our unknown signals, however, this time we will define the vector $\mathbf{x}$ to contain the state variables:
+
+$$
+\mathbf{x} = [i_{L,1}, \ldots, i_{L,m_L}, v_{C,1}, \ldots, v_{C,m_C}]^T
+$$
+
+Note that we have made $\mathbf{x}$ a column vector for convenience. We will define $\mathbf{u}$ to be a vector containing the inputs to our system:
+
+$$
+\mathbf{u} = [v_{V,1}, \ldots ,v_{V,m_V}, i_{I,1}, \ldots ,i_{I,m_I}]^T
+$$ 
+
+Note that refrained from using the variable name $\mathbf{x}$ for the inputs since we did not want to clash with existing literature. In the most general form, our plan can be described as:
+
+$$
+\mathbf{x}'(t) = f(\mathbf{x}(t),\mathbf{u}(t))
+$$
+
+where $f$ is a function that calculates the derivative of our state vector. Then we step forward in time to calculate the new state:
+
+$$
+\mathbf{x}(t+\Delta t) = \mathbf{x}(t) + \mathbf{x}'(t)
+$$
+
+which is known as Euler's forward method. The dynamics of the system is reflected in the function $f$. Ideally, we would like to express our system as below.
+
+\begin{myDefinition}{State Space Representation}{def:DefnStateSpace}
+	For state vector $\mathbf{x}$, input vector $\mathbf{u}$ and output vector $\mathbf{y}$, we say the system is in state space form if it is expressed as follows:
+	
+	\begin{align*}
+	\mathbf{x}'(t) &= A \mathbf{x}(t) + B \mathbf{u}(t)\\
+	\mathbf{y}(t) &= C \mathbf{x}(t) + D \mathbf{u}(t)\\	
+	\end{align*}
+	
+	where $A,B,C,D$ are matrices. We call $A$ the \emph{state transition matrix} and we call $B$ the \emph{input matrix}. The matrice $C$ and $D$ express the output variables as a linear combination of the current state variables and input variables.
+\end{myDefinition}
+
+ The reason this is so desirable is because, as we will see in later chapters, it is very convenient to assess the stability of the system. It is not always possible to write any system in state space form and we may have to linearise the function $f$ around an operating point.
+
+
+\subsection{Representing a circuit in state space form}
+Now we will give a general procedure to find the state space form for a circuit containing resistors, capacitors, inductors, voltage sources and current sources. The methodology we provide, also serves as a proof that a linear state space representation is possible for such a circuit.
+
+Recall that we defined $\mathbf{y}$ contains all the unknown signals -- including the inductor currents and capacitor voltages. So let us define a vector $\mathbf{z}$ that contains all the unknown variables except our state variables:
+
+\begin{align*}
+\mathbf{z} = [&v_{L,1}, \ldots ,v_{L,m_L}, i_{C,1}, \ldots ,i_{C,m_C}, v_{R,1}, \ldots ,v_{R,m_R}, i_{R,1}, \ldots ,i_{R,m_R}, \\
+			&v_{I,1}, \ldots, v_{I,m_I}, i_{V,1}, \ldots, i_{V,m_V}]^T
+\end{align*}
+
+Note that $\mathbf{z}$ contains $m+m_R$ elements. It can be seen that $\mathbf{y}$ is simply the vertical concatenation of $\mathbf{x}$ and $\mathbf{z}$. Let us use Kirchhoff's Laws to write $m$ linearly independent equations. We will rearrange the equations so that any input variables or state variables appear on the RHS, while any output variable that is not a state variable appears on the LHS. Next we write $m_R$ equations relating the voltage and current of each resistor using Ohm's Law. We rearrange these equations so the resistor voltage and currents are on the LHS (since they are neither state variables nor input variables), and the RHS of these equations will be zero.
+
+Now we have written a total of $m_R$ linearly independent equations. Each of these equations contain a linear combination of the variables in $\mathbf{z}$ on the LHS and a linear combination of the variables in $\mathbf{x}$ and $\mathbf{y}$ on the RHS. Thus we can write this out as a matrix equation:
+
+$$
+\underset{(m+m_R)\times(m+m_R)}{T} \mathbf{z} = \underset{(m+m_R)\times(m_L+m_C)}{A_1} \mathbf{x} + \underset{(m+m_R)\times(m_V+m_I)}{B_1} \mathbf{u}
+$$
+
+Note we have indicated the dimensions of the matrices for clarity. Since the equations arising from Ohm's Law and Kirchhoff's Laws are linearly independent, we are certain that $T$ is full rank. Thus, $T^{-1}$ exists. Now let us define the matrix:
+
+\begin{align*}
+S = \begin{pmatrix}
+1/L_1 	&0	&	0	&		0	&	0	&	0	&	0	&	\cdots	&	0 \\
+	0	&\ddots	&	0	&	0	&	0	&	0	&	0	&	\cdots	&	0 \\
+	0	&0	&1/L_{m_L}	&	0	&	0	&	0	&	0	&	\cdots	&	0 \\
+	0	&0	&0		&	1/C_1	&	0	&	0	&	0	&	\cdots	&	0 \\
+	0	&0	&0		&	0 		&\ddots	&	0	&	0	&	\cdots	&	0 \\
+	0	&0	&0		&	0 		& 0	&	1/C_{m_C}&	0	&	\cdots	&	0
+	\end{pmatrix} T^{-1}
+\end{align*}
+
+Note that $S$ is a $(m_L+m_C)\times(m+m_R)$ matrix. Let $I_{(m_L+m_C)}$ denote a $(m_L+m_C)\times(m_L+m_C)$ identity matrix, and let $O_{(m_L+m_C)}$ denote a $(m_L+m_C)\times(m_L+m_C)$ zero matrix. Now we can evaluate the matrices of our state space representation.
+
+\begin{myTheorem}{State Space for Electric Circuits}{thm:ThmStateSpace}
+	The matrices $T, A_1, B_1, S, I_{(m_L+m_C)}, O_{(m_L+m_C)}$ as defined above, can be used to calculate the state space representation as follows:
+\begin{alignat*}{3}
+A &= S A_1, \quad\quad &B &= SB_1, \\
+C &= \begin{pmatrix} I_{(m_L+m_C)} \\ T^{-1}A_1 \end{pmatrix}, \quad\quad &D &= \begin{pmatrix} O_{(m_L+m_C)} \\ T^{-1}B_1 \end{pmatrix}
+\end{alignat*}
+\end{myTheorem}
+Proof: What we are doing is solving the $(m+m_r)\times(m+m_r)$ system to find the inductor voltages and capacitor currents. Once these are found we multiply the inductor voltages by $1/L_k$ which provides the derivative of the inductor currents (as per the inductor component equation). Similarly we multiply the capacitor currents by $1/C_k$ which provides the derivative of the capcitor voltages (as per the capcitor component equation). Thus we have calculated the derivative of our state variables as a function of the state and input variables, which is what we want for the state space representation. $\quad\qedsymbol$
+
+\newpage
+\subsection{Example of calculating the state space for a small circuit}
+
+Please refer to the Figure \ref{fig:RLC2}. Note what we have $m_L = 2$ inductors, $m_C = 1$ capacitor, $m_R=1$ resistor, $m_V=1$ voltage source and $m_I=0$ current sources. The total number of components is $m=5$. The unknowns are shown in blue, and as can be counted there are $m+m_R+m_L+m_C = 9$.
+
+\begin{figure}
+\begin{center}
+\begin{circuitikz}[american, voltage shift=0.5]
+	\draw (0,0)  to[V,invert, v=$v_{V,1}(t)$, i^>=\textcolor{blue}{$i_{V,1}(t)$}] (0,3) 
+	to[L=$L_1$, v=\textcolor{blue}{$v_{L,1}(t)$}, i=\textcolor{blue}{$i_{L,1}(t)$}] (3,3) to[R=$R_1$, v=\textcolor{blue}{$v_{R,1}(t)$}, i=\textcolor{blue}{$i_{R,1}(t)$}] (6,3) to[L=$L_2$, v=\textcolor{blue}{$v_{L,2}(t)$}, i=\textcolor{blue}{$i_{L,2}(t)$}] (6,0) -- (0,0);
+	\draw (3,3) to[C=$C_1$, v=\textcolor{blue}{$v_{C,1}(t)$}, i=\textcolor{blue}{$i_{C,1}(t)$}] (3,0);
+\end{circuitikz}
+
+\caption{Annotated circuit diagram}
+\label{fig:RLC2}
+\end{center}
+\end{figure}
+
+
+Our aim is to represent this circuit in state space form. As such we note there are $m_L + m_C = 3$ state variable, thus our state variables vector is:
+$$
+\mathbf{x} = [i_{L,1}, i_{L,2}, v_{C,1}]^T
+$$
+
+Our input variable vector is:
+$$
+\mathbf{u} = [v_{V,1}]^T
+$$
+
+And the non-state output variables vector is:
+$$
+\mathbf{z} = [v_{L,1}, v_{L,2}, i_{C,1}, v_{R,1}, i_{R,1}, i_{V,1}]^T
+$$
+
+The first step is to use Kirchhoff's Laws (KCL, KVL) and Ohm's Law (OL) to write $m+m_r = 6$ linearly independent equations. This is achieved below:
+\begin{alignat*}{3}
+\mathrm{KCL}&\implies\quad &i_{V,1} &= i_{L,1}\\
+\mathrm{KCL}&\implies\quad &i_{R,1}+i_{C,1} &= i_{L,1}\\
+\mathrm{KCL}&\implies\quad &i_{R,1} &= i_{L,2}\\
+\mathrm{KVL}&\implies\quad &v_{L,1} &= -v_{C,1} + v_{V,1}\\
+\mathrm{KVL}&\implies\quad &v_{R,1} + v_{L,2} &= v_{C,1}\\
+\mathrm{OL}&\implies\quad &v_{R,1} - Ri_{R,1} &= 0
+\end{alignat*}
+
+The next step is to write them in matrix form as shown below:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+\chapter{Power Systems in Steady State}
+In this chapter we will look how we analyse a power system when it is in steady state. ``Steady state'' refers to normal operating conditions, and even when we consider dynamic studies, we normally assume steady state has been reached before any event (or series of events) occurs.
+
+Compared with a generic circuit, a power system has a major simplification: in steady state all the voltages and currents sources are sinusoidal. This arises from the way electricity is generated (the next chapter on synchronous generators has more information).
+
+We will begin by showing how the Laplace transform we introduced in the previous chapter can be simpliefied for steady state analysis, and we will define ``phasor'' and ``complex power'', two concepts that are heavily used in electrical engineering. Following this we will show how power flows in a circuit can be calculated. Towards the end of the chapter we will show how to calculate the fault currents in a power system if a contingency occurs during steady state.
+
+Please note that for the remainder of this chapter, and these notes we will be using the symbol $j$ exclusively for the imaginary unit.
+
+\section{Transfer Function and Frequency Response}
+Recall in the previous section we proved that an electrical circuit is linear. Thus, instead of considering all the sources at once, we can find the response of the circuit to a single input, when all the other sources are zero. Repeating this for all the inputs, we can use superposition to find the reponse of the system when all inputs are arbitrary functions. 
+
+Let us call the input signal we are considering $x$ and the output we are solving for $y$. For steady state analysis, we are not concerned about how the circuit responds to initial initial conditions thus we assume the condition of initial rest.
+
+\begin{myDefinition}{Condition of Initial Rest}{def:DefnCOIR}
+If whenever $x(t) = 0$ for $t\leq t_0$ then $y(t)=0$ for $t\leq t_0$.
+\end{myDefinition}
+
+Under this condition, no part of the system is explicitly dependent on time, except for the input $x(t)$. Thus, if we delay $x$ by $\tau$, the new output of the system would be the same as if we delayed the original ouput $y$ by $\tau$. In this sense, we consider the linear circuit to be time invariant provided it is subject to the condition of initial rest.
+
+\begin{myDefinition}{Unit Impulse and Impulse Response}{def:DefnImpulseResponse}
+We define unit impulse (also called the Dirac delta) as a function $\delta$ such that for any other continuous time function $f$:
+$$
+\int^{\infty}_{-\infty} f(t) \delta(t)\,dt = f(0)
+$$
+Then, the inpulse response of an linear time invariant (LTI) system, is defined to be the output when the input is an impulse. Usually we denote it as $h$.
+\end{myDefinition}
+
+The reason we care so much about the impulse response of an LTI system, is because the impulse response fully characterises the system. That is to say we can calculate the output of the system for arbitrary input $x$, by convolving the input with the impulse response.
+\begin{myTheorem}{Convolution Formula}{def:DefnConvolution}
+If an LTI system has impulse response $h$, then the output $y$ of the system when the input is $x$ is given by:
+
+$$
+y(t) = (h*x)(t) = \int_{-\infty}^{\infty} x(\tau) h(t-\tau)\,d\tau
+$$
+
+We call this operation \emph{convolution} hence the output of the system is the convolution of its impulse response with the input.
+\end{myTheorem}
+Proof: Intuitively we can think of a unit impulse as a very narrow pulse with unit area. The impulse function allows us to decompose a signal as a weighted sum of shifted unit pulses. We take the limit as these pulses become narrower, then the sum becomes an integral. To precisely define what an integral means requires a high level of mathematical sophistication for which the reader is encouraged to consult an analysis textbook. Nevertheless, for nice and well behaved functions $x$ the following is true:
+
+$$
+x(t) = \int_{-\infty}^{\infty} x(\tau)\delta(t-\tau)\,d\tau
+$$
+
+To see why, if we make a change of variable $\tau' = t - \tau$, then:
+$$\mathrm{RHS} = \int_{-\infty}^{\infty} x(t-\tau')\delta(\tau')\,d\tau' = x(t-0) = \mathrm{LHS}$$
+
+Now that we have decomposed the input as a weighted sum of shifted impulses, the linearity and time invariance of the system means that the output should be the weighted and time shifted response to the impulse. Conceptually, this is what the convolution formula is doing. More rigorous mathematical treatment is of course possible. $\quad\qedsymbol$
+
+The important thing to realise is that the signal $h$ fully defines the steady state behaviour of an electric circuit. Just from $h$ we can obtain information about the system. For example, if the system is \emph{causal} then $h(t) = 0$ for all $t<0$. Our model of an electric circuit is indeed causal (the current state of the circuit does not depend on the future state).
+
+In the previous chapter we introduced the Laplace Transform, and a very useful thing we can do is find the Laplace Transform of the impulse response:
+
+\begin{myTheorem}{Transfer Function}{def:DefnTransferFunc}
+If an LTI system has impulse response $h$, then $H(s) = \mathcal{L}\{h\}(s)$ is called the transfer function.
+\bigbreak
+If the input to the system is a complex exponential $x(t)=e^{st}$ where $s\in\mathbb{C}$ then the output of the system will be $y(t) = H(s)x(t)$
+\end{myTheorem}
+Proof: Using the convolution formula:
+
+\begin{align*}
+y(t) &= \int^{\infty}_{-\infty} x(\tau) h(t-\tau)\,d\tau = \int^{\infty}_{-\infty} e^{s\tau} h(t-\tau)\,d\tau \\
+\end{align*}
+
+To proceed, let us make the change of variables $\tau' = t - \tau$:
+
+\begin{align*}
+y(t) &= \int^{\infty}_{-\infty} e^{s(t-\tau')} h(\tau')\,d\tau' = e^{st} \int^{\infty}_{0^-} h(\tau') e^{-\tau'}\,d\tau' = H(s) x(t)
+\end{align*}
+
+Note that we were able to change the bottom limit of the integral since our system is causal, hence $h(t)$ is zero for negative time. In the final equality we just used the definition of the Laplace transform.$\quad\qedsymbol$
+
+Although our impulse response is a function of a real variable (time), the transfer function is a function of a complex variable ($s$). When dealing with complex numbers, Euler's formula is most useful.
+
+For a chosen $s\in \mathbb{C}$, the value of $H(s)$ is also a complex number. For any complex number, we can use Euler's formula to represent the complex number as a complex exponential. 
+
+\begin{myTheorem}{Euler's Formula and Polar Form}{def:DefnEuler}
+Let $x\in\mathbb{R}$. Then Euler's formula states:
+$$
+e^{jx} = \cos(x) +j\sin(x)
+$$
+
+Any complex number $s = a + jb$, where $a,b\in\mathbb{R}$ is equal to:
+$$
+s = a + jb = Re^{j\theta}
+$$
+where $R = \sqrt{a^2+b^2}$ is called the \emph{magnitude} and $\theta = \mathrm{atan2}^{-1}(y,x)$ is called the \emph{argument}.
+\bigbreak
+When a complex number is represented as $Re^{j\theta}$ we say it is in \emph{polar form}.
+\end{myTheorem}
+Proof: The proof of Euler's formula is based on using the Taylor series expansion of the exponential, sine and cosine functions. This is quite a foundational result in mathematics so the details of the proof can be found in a calculus textbook. 
+
+The existence of polar form is a direct corollary of Euler's formula. To show this we argue for any $R,\theta\in\mathbb{R}$:
+$$
+Re^{j\theta} = R\cos(\theta) + jR\sin(\theta)
+$$
+If we impose that $R\cos(\theta) = a$ and $R\sin(\theta) = b$, then it is evident that $Re^{j\theta} = a + jb$. To find the value of $R$ we square and add our equations:
+\begin{align*}
+\left(R\cos(\theta)\right)^2 + \left(R\sin(\theta)\right)^2 = a^2 + b^2 \implies R^2\left(\cos^2(\theta) + \sin^2(\theta)\right) &= a^2 + b^2 \\ \implies R^2 &= a^2 + b^2.
+\end{align*}
+It is customary to take the positive solution hence $R=\sqrt{a^2+b^2}$ as required. To find the angle $\theta$ we divide the two equations:
+$$
+\frac{R\sin(\theta)}{R\cos(\theta)} \implies \tan(\theta) = \frac{b}{a}
+$$
+Before we solve this equation, we recall that since $R$ is non-negative, we require $\cos(\theta)$ to have the same sign as $a$ and we require $\sin(\theta)$ to have the same sign as $b$. This is why we use the two argument arctangent to solve for the value of $\theta$. $\quad\qedsymbol$
+
+One operation we perform on complex numbers is \emph{conjugation} which means changing the sign of its imaginary part or, equivalently, changing the sign of its argument. Conjugation is usually denoted with a asterix, so it is important not to confuse it with convolution. In the previous chapter we saw the linearity and differentiation property of the Laplace transform. We will introduce another property that will prove useful now:
+
+\begin{myTheorem}{Conjugation Property of the Laplace Transform}{def:DefnConjugation}
+Suppose $f \xleftrightarrow{\mathcal{L}} F$. Let $g$ be the complex conjugation of $f$, that is $g(t) = f(t)^*$. The Laplace Transform of $g$ is:
+$$
+G(s) = \left(F(s^*)\right)^*
+$$
+\end{myTheorem}
+Proof: Let $s = \sigma +j\omega$. Observe that:
+$$
+\left(e^{-st}\right)^* = \left(e^{-(\sigma +j\omega)t}\right)^* = e^{-\sigma t}\left(e^{-j\omega t}\right)^* = e^{-\sigma t}e^{j\omega t} = e^{-(\sigma-j\omega)t} = e^{-s^*t} 
+$$
+Now using the definition of the Laplace Transform:
+\begin{align*}
+G(s) &= \int_{0^-}^\infty g(t) e^{-st}\,dt = \int_{0^-}^\infty f(t)^* e^{-st}\,dt  = \int_{0^-}^\infty \left(f(t)e^{-s^*t}\right)^*\,dt
+\\ &= \left(\int_{0^-}^\infty f(t)e^{-s^*t}\,dt\right)^* = \left(F(s^*)\right)^* \quad\qedsymbol
+\end{align*}
+
+The reason this is useful is because the impulse response of our circuit to be a real valued function. Hence, $h(t) = h(t)^*\implies H(s) = \left(H(s^*)\right)^*$. If we denote the magnitude of $H(s)$ as $|H(s)|$ and its argument as $\arg(H(s))$, then the transfer function of our circuit satisfies the following:
+\begin{align*}
+|H(s)| &= |\left(H(s^*)\right)^*| = |H(s^*)| \\
+\arg(H(s)) &= \arg\left(\left(H(s^*)\right)^*\right) = -\arg(H(s^*))
+\end{align*}
+
+\begin{myTheorem}{Frequency Response}{thm:ThmFrequencyResponse}
+Consider an LTI system with an impulse response that is real valued. Let $H(s)$ be the transfer function of this system and consider the input:
+$$
+x(t) = A \cos(\omega t + \phi)
+$$
+
+where $A,\omega,\phi\in\mathbb{R}$. The output of the system is:
+
+$$
+y(t) = A |H(j\omega)| \cos\left(\omega t + \phi + \arg(H(j\omega))\right)
+$$
+
+The complex number $H(j\omega)$ is called the \emph{frequency response} of the system.
+\end{myTheorem}
+
+Proof: We use Euler's formula to rewrite $x$ as the sum of two scaled unit complex exponentials:
+\begin{align*}
+x(t) = \frac{A}{2}\left(e^{j(\omega t +\phi)} + e^{-j(\omega t +\phi)}\right) = \frac{Ae^{j\phi}}{2}e^{j\omega t} + \frac{Ae^{-j\phi}}{2} e^{-j\omega t}
+\end{align*}
+
+From \ref{def:DefnTransferFunc} we know that when the input to the system is $e^{j\omega t}$ the output is $H(j\omega)e^{j\omega t}$. Similarly, when the input is $e^{-j\omega t}$ the output is $H(-j\omega)e^{-j\omega t}$. We use the linearity of the system to argue that when the input is $x$, the output must be:
+
+\begin{align*}
+y(t) &= \frac{Ae^{j\phi}}{2}H(j\omega)e^{j\omega t} + \frac{Ae^{-j\phi}}{2}H(-j\omega)e^{-j\omega t} \\
+&= \frac{Ae^{j\phi}}{2}|H(j\omega)|e^{j\arg(H(j\omega))}e^{j\omega t} + \frac{Ae^{-j\phi}}{2}|H(-j\omega)|e^{j\arg(H(-j\omega))}e^{-j\omega t} 
+\end{align*}
+
+Note we have simply written the transfer function in polar form. Observe that $(j\omega)^* = -j\omega$. Since are electric circuit has a real valued impulse response, using \ref{def:DefnConjugation} we can argue $|H(j\omega)| = |H(-j\omega)|$ and $\arg(H(j\omega)) = -\arg(H(-j\omega))$. This allows us to continue on:
+
+\begin{align*}
+y(t) &= \frac{Ae^{j\phi}}{2}|H(j\omega)|e^{j\arg(H(j\omega))}e^{j\omega t} + \frac{Ae^{-j\phi}}{2}|H(j\omega)|e^{-j\arg(H(j\omega))}e^{-j\omega t} \\
+&= \frac{A|H(j\omega)|}{2} \left( \exp(j(\omega t + \phi + \arg(H(j\omega)))) + \exp(-j(\omega t + \phi + \arg(H(j\omega)))) \right) \\
+&=  A |H(j\omega)| \cos\left(\omega t + \phi + \arg(H(j\omega))\right)
+\end{align*}
+
+we used Euler's formula in the final step to reach the desired outcome.$\quad\qedsymbol$
+
+What we have shown is that in steady state, if the input is a sinusoid, then the output is also a sinusoid \emph{at the same frequency}. This a remarkable result and explains why the frequency of a power grid is equivalent for each current and voltage signal. Furthermore, the frequency response contains all the information we need to characterise our system in steady state.
+
+We might wonder does the frequency response exist for $any$ circuit?
+
+\begin{myTheorem}{Existense of Frequency Response}{def:DefnExistenceFrequencyResponse}
+Consider an LTI system with an impulse response $h$ and transfer function $H$. The following statements are equivalent:
+\begin{itemize}
+\item{The impulse response is absolutely integrable: $\int_{-\infty}^{\infty} h(t)\,dt<\infty$}
+\item{The region of convergence of the transfer function contains the imaginary axis.}
+\item{The frequency response exists}
+\item{For any bounded input, the output of the system will also be bounded.}
+\end{itemize}
+\end{myTheorem}
+Proof: Coming soon. $\quad\qedsymbol$
+
+As mentioned at the beginning of the chapter, we actually want the power system to be operating in steady state as much as possible. In the next chapters we will see how this notion of bounded input bounded output (BIBO) stability, along with other notions of stability, allow us to design control systems. But for now, it suffices to say that if the frequency response of a power system is undefined, this will be an unstable and undesirable power system. For the remainder of this chapter we will assume the frequency response exists.
+
+
+
+\section{Steady state solution using phasors}
+In the previous section we proved that if the input to an LTI system is a sinusoid, then the output must also be a sinusoid at the same frequency as the input. The scaling and phase shift of the output relative to the input is wholly characterised by the frequency response $H(j\omega)$. The LTI scales the input by $|H(j\omega)|$ and phase shifts by $\arg(H(j\omega))$ to produce the output.
+
+\begin{myDefinition}{Phasor Mapping}{def:DefnPhasors}
+	Let $\mathcal{S_\omega}$ denote the space of all sinusoidal functions with angular frequency $\omega\in\mathbb{R}\setminus\{0\}$. We will map each element in $\mathcal{S}$ to a scalar in $\mathbb{C}$ as follows.
+	\bigbreak
+	Let $x\in\mathcal{S_\omega}$ where $x(t) = A\cos(\omega t + \phi)$, where $A\in\mathbb{R}$ and $\phi\in(-\pi, \pi]$. We define the complex number:
+	
+	$$
+		\ovset{\rightharpoonup}{X} = \frac{A}{\sqrt{2}} e^{j\phi}
+	$$
+	
+	We call $\ovset{\rightharpoonup}{X}$ a \emph{phasor} and we will often use the notation $\ovset{\rightharpoonup}{X} = A\angle \phi$.
+\end{myDefinition}
+
+Note that we excluded $\omega = 0$ for our convenience, so that we have freedom to divide by $\omega$. If we are interested in what happens as $\omega\to 0$ we would just need to be a bit more careful. We have also chosen to define the sinusoid in terms of the cosine function. This is not a limitation since sine function can be converted to cosine by phase shifting by $\pi/2$.
+
+Since we have stipulated that the sinusoids phase be in the range $(\pi, \pi]$ the mapping is one-to-one. Therefore, each sinusoid has been uniquely mapped to a phasor, and we can also map each phasor back to a unique function in $\mathcal{S_\omega}$. The reason we scaled the magnitude of the phasor by $1/\sqrt{2}$ will become obvious in the next chapter.
+
+\begin{myTheorem}{Input and Output Phasors}{thm:ThmPhasors}
+	Let us consider an LTI system with frequency response $H(j\omega)$. Suppose the input is a sinusoid with phasor representation $\ovset{\rightharpoonup}{X}$. The complex number:
+	
+	$$\ovset{\rightharpoonup}{Y} = H(j\omega)\ovset{\rightharpoonup}{X}$$
+	
+	is a phasor which maps to the output of the system.
+\end{myTheorem}
+Proof: Let us name the input to our system as $x$. Since $x$ is a sinusoid:
+$$
+x(t) = A\cos(\omega t + \phi)
+$$
+Thus the phasor $\ovset{\rightharpoonup}{X} = \frac{A}{\sqrt{2}}e^{j\phi}$. Now let us evaluate:
+
+$$
+\ovset{\rightharpoonup}{Y} = H(j\omega)\ovset{\rightharpoonup}{X} = |H(j\omega)|e^{j\arg(H(j\omega))}\frac{A}{\sqrt{2}}e^{j\phi} = \frac{A|H(j\omega)|}{\sqrt{2}}e^{j(\phi + \arg(H(j\omega)))}
+$$
+
+Thus, we can see that the phasor $\ovset{\rightharpoonup}{Y}$ maps onto the sinusoid:
+
+$$
+y(t) = A |H(j\omega)| \cos\left(\omega t + \phi + \arg(H(j\omega))\right)
+$$
+
+But in \ref{thm:ThmFrequencyResponse} we showed that this is precisely the output of the system when the input is $x$. $\quad\qedsymbol$
+
+
+So far we have seen that the steady state response of the circuit can be found using the frequency response and phasors. However, it still may not be clear how do we find the frequency response. One approach would be to solve the circuit when the input is a unit impulse in the time domain and then take the Laplace transform of the inpulse response. In Chapter 1, we showed this is equivalent to first taking the Laplace transform of the input and then solving the circuit in the Laplace domain. The second approach is easier since it avoids differential equations. Furthermore, the Laplace transform of the unit impulse is $1$ for all $s$, so we would just set the input $X(s) = 1$, and the solution for the output would be the transfer function $H(s)$.
+
+
+If we are only interested in the output of the system, and do not explicitly want the value of the transfer, there is a shortcut we can take. Instead of solving the circuit with input $X(s)=1$ (the Laplace transform of the unit impulse), if we scale the input by $\ovset{\rightharpoonup}{X}$, due to the linearty of the system, the output also gets scaled by $\ovset{\rightharpoonup}{X}$. Hence we are straightaway solving for $H(s)\ovset{\rightharpoonup}{X}$. Then by substituting $s=j\omega$, we have found $H(j\omega)\ovset{\rightharpoonup}{X}$ which, as we have proved in \ref{thm:ThmPhasors}, is the phasor representation of the output of our system.
+
+Another shortcut we can take is to make the substition $s=j\omega$ right at the beginning, before solving our circuit equations. As we saw in Chapter 1, we get the circuit equations from the component equations and from Kirchhoff's Laws. The equations arising from Kirchhoff's Law have the same form in the Laplace domain as the time domain, hence they do not change with the substitution $s=j\omega$. Convsersely, the component equations have a simplified form when working in steady state.
+
+\begin{myTheorem}{Component equation under steady state}{thm:ThmSSComponentEq}
+	Consider a LTI circuit and let $v$ be the voltage across a component and $i$ be the current through the component. Suppose the system is in steady state, with the input being a sinusoid with angular frequency $\omega$. Let $\ovset{\rightharpoonup}{V}$ be the phasor representation of $v$ and let $\ovset{\rightharpoonup}{I}$ be the phasor representation of $i$.
+	\bigbreak
+	\begin{itemize}
+		\item{If the component is a resistor, with resistance $R$, then the component equation is $\ovset{\rightharpoonup}{V} = R\ovset{\rightharpoonup}{I}$}
+		\item{If the component is an inductor, with inductance $L$, then the component equation is $\ovset{\rightharpoonup}{V} = j\omega L \ovset{\rightharpoonup}{I}$}
+		\item{If the component is a capacitor, with capacitance $C$, then the component equation is $\ovset{\rightharpoonup}{V} = \frac{1}{j\omega C} \ovset{\rightharpoonup}{I}$}
+	\end{itemize}
+% 	\bigbreak
+%	For an inductor, $\omega L$ is called its \emph{reactance}. Similarly, for a capacitor, $\frac{-1}{\omega C}$ is called its \emph{reactance}.
+\end{myTheorem}
+Proof: Let $V$ and $I$ be the Laplace Transforms of $v$ and $i$. Applying \ref{thm:ThmLaplaceComponents} with inital conditions set to zero and substituting $s=j\omega$ yields the following:
+\begin{align*}
+\text{For resistor:}\quad V(j\omega) &= R I(j\omega) \\
+\text{For inductor:}\quad V(j\omega) &= j\omega L I(j\omega) \\
+\text{For capacitor:}\quad V(j\omega) &= \frac{1}{j\omega C} I(j\omega)
+\end{align*}
+
+Now let us suppose $H_V$ is the transfer function from the input to the component voltage. For steady state we consider when the input $X(s) = \ovset{\rightharpoonup}{X}$. Therefore, $V(j\omega) = H_V(j\omega) \ovset{\rightharpoonup}{X}$. Using the result of \ref{thm:ThmPhasors} we can see this is precisely phasor representation of $v$. Hence $V(j\omega) = \ovset{\rightharpoonup}{V}$.
+
+Now let us suppose $H_I$ is the transfer function from the input to the component current. Thus, $I(j\omega) = H_I(j\omega) \ovset{\rightharpoonup}{X}$. Using the result of \ref{thm:ThmPhasors} we can see this is precisely phasor representation of $i$. Hence $I(j\omega) = \ovset{\rightharpoonup}{I}$.
+
+Substituting $V(j\omega) = \ovset{\rightharpoonup}{V}$ and $I(j\omega) = \ovset{\rightharpoonup}{I}$ into the above component equations yields the desired result. $\quad\qedsymbol$
+
+Note that we rearranged the component equation for the capacitor assuming that $\omega\neq 0$. If we are interested in what happens as $\omega\to 0$ we could be a little bit more careful and use limits. Of course, $\omega\to 0$ corresponds to a constant input, and is typically called DC (which stands for direct current). What we would find is that the DC steady state voltage across inductors is zero, and the DC steady state current through capacitors is zero. We will not comment more on this, since the circuits in a power system are usually AC (which stands for alternating current), hence $\omega\neq 0$.
+
+
+Now we are ready to state the general procedure we undertake to find the steady state solution.
+
+\begin{enumerate}
+\item{Map all the input signals onto their phasor representation.}
+\item{Draw and annotate the circuit.}
+\item{Count the number of unknowns.}
+\item{Write out the component equations under steady state. (This will require calculating the reactances of the inductors and capacitors.)}
+\item{Use Kirchhoff's Laws to write the remaining equations until the total number of equations is equal to the number of unknowns.}
+\item{Solve the system of equations to get the phasors corresponding to the unknown signals.}
+\item{Map the output phasors onto their sinusoidal forms.}
+\end{enumerate}
+
+It should be noted that the system of equations the we are required to solve is relatively simple compared to what we faced in Chapter 1. We get an analytical solution without meddling with differential equations and there is no need to perform Laplace or inverse Laplace transforms or algebraicly manipulate the $s$ variable. Instead, all the equations have constant, scalar coefficients, hence they can quite easily be put into a matrix for Gaussian elimination.
+
+\section{Impedance and Thevenin's Theorem}
+
+\newpage
+\section{Complex Power}
+
+\section{Three Phase Systems}
+
+\section{Power Flow}
+
+\chapter{Synchronous Generators}
+
+\chapter{Transient Stability}
+
+\chapter{Power Electronics and Converters}
+
+\chapter{Induction Machines}
+
+\chapter{Wind Farms}
+
+
+\end{document}
